@@ -2,35 +2,36 @@
 import { getElementByIdOrFail } from "./utils.js";
 import { characters } from "./characters.js";
 // import { antiHeroes } from "./antiheroes.js";
+import { simpsons } from "./simpsons.js";
 
 const myButton = getElementByIdOrFail("myButton1");
 const focusedCharacterPara = getElementByIdOrFail("focusedCharacterPara");
-const myList = getElementByIdOrFail("charactersUL");
+const myList = getElementByIdOrFail("myDiv");
+const image = getElementByIdOrFail("myImg");
 
 myButton.addEventListener("click", () => {
-    const searchTerm = prompt("input search term");
-    focusedCharacterPara.outerHTML = "You said: " + searchTerm;
+  const searchTerm = prompt("input search term");
+  focusedCharacterPara.outerHTML = "You said: " + searchTerm;
 });
 
 function makeLiElementsForCharacters() {
-    return characters.map((character) => {
-        //Not yet attached to any point in the DOM tree
-        const element = document.createElement("li");
-        element.innerHTML = character.name + " from " + character.book;
+  return simpsons.map((ep) => {
+    //Not yet attached to any point in the DOM tree
+    const element = document.createElement("div");
+    element.innerHTML = ep.name;
 
-        element.addEventListener("click", () => {
-            alert(character.powers.join(", "));
-        });
-        element.addEventListener("mouseover", () => {
-            focusedCharacterPara.innerText =
-                character.name + ": " + character.powers.join(", ");
-        });
-
-        return element;
+    element.addEventListener("click", () => {
+      alert(`Season: ${ep.season}, Episode: ${ep.number}`);
     });
+    element.addEventListener("mouseover", () => {
+      image.src = ep.image.medium;
+    });
+
+    return element;
+  });
 }
 const characterLiElements = makeLiElementsForCharacters();
 
-for (const li of characterLiElements) {
-    myList.appendChild(li);
+for (const el of characterLiElements) {
+  myList.appendChild(el);
 }
